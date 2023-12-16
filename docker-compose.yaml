@@ -1,0 +1,23 @@
+version: '3.4'
+services:
+  integrationtoolkit.api:
+    image: egyptiantaxauthority/integrationtoolkit.api:3.1.3
+    ports:
+      - "8020:80"
+    restart: always
+    environment:
+      - DBHOST=sqlite3
+      - ASPNETCORE_URLS=http://+:80;
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ToolkitConfig__LocalConnectionsString=Data Source=/_data/LocalReceipts.db;
+      - ToolkitConfig__EtaConfig__IdentityServiceUrl=https://id.preprod.eta.gov.eg/connect/token
+      - ToolkitConfig__EtaConfig__InvoicingServiceBaseUrl=https://api.preprod.invoicing.eta.gov.eg
+      - ToolkitConfig__EtaConfig__InvoicingServiceVersion=1
+      - ToolkitConfig__EtaConfig__PosSerial=__PosSerialNumber__
+    volumes:
+      - type: volume
+        source: user_data
+        target: /_data
+
+volumes:
+  user_data:
